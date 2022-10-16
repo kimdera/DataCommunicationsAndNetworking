@@ -1,0 +1,16 @@
+HTTP/1.1 400 Bad Request
+Date: Sun, 16 Oct 2022 23:21:10 GMT
+Content-Type: text/html
+Content-Length: 219
+Connection: close
+
+<html>
+  <head>
+    <title>Bad Request</title>
+  </head>
+  <body>
+    <h1><p>Bad Request</p></h1>
+    Invalid HTTP Version &#x27;Invalid HTTP Version: &#x27;-o requestResponse.txt HTTP/1.1&#x27;&#x27;
+  </body>
+</html>
+null

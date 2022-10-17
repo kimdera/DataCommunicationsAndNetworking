@@ -47,15 +47,6 @@ public class clientLibrary {
       // getting get http response
       response = receiveResponse("GET", socket, str, mainUrl, url);
 
-      if (response.contains("HTTP/1.0") || response.contains("HTTP/1.1") || response.contains("HTTP/2.0")) {
-        if (needRedirection(response)) {// check if this request needs to be redirected or not
-          // ex: httpc get
-          // 'http:httpbin.org/redirect-to?url=http://httpbin.org/get?course=networking&assignment=1&status_code=200'
-          sendHttpRequest(response, socket, str, mainUrl, queryHM.get("url"));
-          response = receiveResponse("POST", socket, str, mainUrl, queryHM.get("url"));
-        }
-      }
-
       socket.close();
     } catch (UnknownHostException e) {
       e.printStackTrace();
@@ -98,14 +89,6 @@ public class clientLibrary {
 
       // getting post http response
       response = receiveResponse("POST", socket, str, mainUrl, url);
-      if (response.contains("HTTP/1.0") || response.contains("HTTP/1.1") || response.contains("HTTP/2.0")) {
-        if (needRedirection(response)) {// check if this request needs to be redirected or not
-          // ex: httpc post
-          // 'http:httpbin.org/redirect-to?url=http://httpbin.org/get?course=networking&assignment=1&status_code=200'
-          sendHttpRequest(response, socket, str, mainUrl, queryHM.get("url"));
-          response = receiveResponse("POST", socket, str, mainUrl, queryHM.get("url"));
-        }
-      }
 
       socket.close();
     } catch (UnknownHostException e) {
@@ -307,19 +290,6 @@ public class clientLibrary {
 
   public boolean outputToFile(String str) {
     if (str.contains("-o")) {
-      return true;
-    }
-    return false;
-  }
-
-  // method checking if http response has to be redirected
-  // ----------------------------------------------------------------------------------------------
-
-  public boolean needRedirection(String data) {
-    // client receives the 3xx on the first line usually the 20th char
-    data = data.substring(0, 20);
-    // if client receives a redirection code (3xx)
-    if (data.contains("200") || data.contains("301") || data.contains("302") || data.contains("304")) {
       return true;
     }
     return false;

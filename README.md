@@ -7,7 +7,7 @@ the commands for this assignment:
 - `httpc help post` to get help regarding the `POST` request
 - `httpc get 'http://httpbin.org/get?course=networking&assignment=1'` for the `GET` request with query parameters
 - `httpc get -v 'http://httpbin.org/get?course=networking&assignment=1'` for the `GET` request with verbose option
-- `httpc post -h Content-Type:application/json --d '{"Assignment": 1}' http://httpbin.org/post` for the `POST` request with inline data
+- `httpc post -h Content-Type:application/json --d '{"Assignment": 1}' 'http://httpbin.org/post'` for the `POST` request with inline data (updated)
 - `httpc post -h Content-Type:application/json --f bodyFile.txt 'http://httpbin.org/post'` for the `POST` request with body in a file 
 - `httpc -v 'http://httpbin.org/get?course=networking&assignment=1' -o requestResponse.txt` to write the response of your request in a .txt file called `requestResponse`.
 

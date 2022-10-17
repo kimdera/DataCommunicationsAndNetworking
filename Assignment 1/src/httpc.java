@@ -67,9 +67,6 @@ public class httpc {
 // httpc help post
 // httpc get 'http://httpbin.org/get?course=networking&assignment=1'
 // httpc get -v 'http://httpbin.org/get?course=networking&assignment=1'
-// inline -d post: httpc post -h Content-Type:application/json --d
-// '{"Asshignment": 1}' 'http://httpbin.org/post'
-// file -f post: httpc post -h Content-Type:application/json --f bodyFile.txt
-// 'http://httpbin.org/post'
-// [bonus 2]test -o to write response to hello.txt: httpc -v
-// 'http://httpbin.org/get?course=networking&assignment=1' -o hello.txt
+// inline -d post: httpc post -h Content-Type:application/json --d '{"Asshignment": 1}' 'http://httpbin.org/post'
+// file -f post: httpc post -h Content-Type:application/json --f bodyFile.txt 'http://httpbin.org/post'
+// [bonus 2]test -o to write response to hello.txt: httpc -v 'http://httpbin.org/get?course=networking&assignment=1' -o hello.txt

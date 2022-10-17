@@ -1,16 +1,23 @@
-HTTP/1.1 400 Bad Request
-Date: Sun, 16 Oct 2022 23:21:10 GMT
-Content-Type: text/html
-Content-Length: 219
+HTTP/1.1 200 OK
+Date: Mon, 17 Oct 2022 03:35:00 GMT
+Content-Type: application/json
+Content-Length: 422
 Connection: close
+Server: gunicorn/19.9.0
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
 
-<html>
-  <head>
-    <title>Bad Request</title>
-  </head>
-  <body>
-    <h1><p>Bad Request</p></h1>
-    Invalid HTTP Version &#x27;Invalid HTTP Version: &#x27;-o requestResponse.txt HTTP/1.1&#x27;&#x27;
-  </body>
-</html>
+{
+  "args": {
+    "assignment": "1", 
+    "course": "networking"
+  }, 
+  "headers": {
+    "Host": "httpbin.org", 
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36", 
+    "X-Amzn-Trace-Id": "Root=1-634ccd64-2a9045d75e4a64da0064e037"
+  }, 
+  "origin": "104.221.55.117", 
+  "url": "http://httpbin.org/get?course=networking&assignment=1"
+}
 null

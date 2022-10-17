@@ -25,7 +25,7 @@ public class clientLibrary {
   public String GET(String str) throws MalformedURLException {
 
     // getting the host and port number from the url
-    String url = str.substring(str.indexOf("http://"));
+    String url = str.substring(str.indexOf("http://"), str.indexOf("'", str.indexOf("http://")));
     // use Java's URL class (from .net library)
     URL mainUrl = new URL(url);
 
@@ -76,7 +76,7 @@ public class clientLibrary {
   public String POST(String str) throws MalformedURLException {
 
     // getting the host and port number from the url
-    String url = str.substring(str.indexOf("http://"));
+    String url = str.substring(str.indexOf("http://"), str.indexOf("'", str.indexOf("http://")));
     URL mainUrl = new URL(url);
     host = mainUrl.getHost();
     portNum = mainUrl.getDefaultPort();

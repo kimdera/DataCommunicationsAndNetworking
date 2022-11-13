@@ -27,6 +27,7 @@ public class httpc {
           if(input.contains("..")) 
           {
             System.out.println( "HTTP/1.0 ERROR 404");
+            System.out.println( "The requested file is located outside the working directory.");
             System.out.println( "Connection: close");
             System.out.println( "User-Agent: COMP445");
             System.out.println( "Host: localhost");

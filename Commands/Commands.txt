@@ -17,27 +17,38 @@ httpc post -h Content-Type:application/json --f bodyFile.txt 'http://httpbin.org
 
 -o: allow the HTTP client to write the body of the response to the specified file instead of the console
 [bonus 2]test -o to write response to hello.txt: httpc -v 'http://httpbin.org/get?course=networking&assignment=1' -o hello.txt
-
+----------------------------------------------------------------------------------------------------------------------------------------
 Assignment2:
 
 Run server:
 httpfs -d /Users/Kim/Desktop/445Java/Assign2/COMP-445
 httpfs -v -d /Users/Kim/Desktop/445Java/Assign2/COMP-445
 httpfs -v -p 8080 -d /Users/Kim/Desktop/445Java/Assign2/COMP-445
+
+//Raisa's Server Directory 
 httpfs -d /Users/raisazaman/Desktop/COMP 445
 
 Run client:
-          A1:httpc get -v 'http://localhost/get?course=networking&assignment=1'
-             httpc post -h Content-Type:application/json --d '{"Assignment": 1}' 'http://localhost/post'
+          A1:
+            httpc get -v 'http://localhost/get?course=networking&assignment=1'
+            httpc post -h Content-Type:application/json --d '{"Assignment": 1}' 'http://localhost/post'
 
-         A2:httpc post -v -h Content-Type:application/json --d '{"Assignment": 210}' 'http://localhost/inputBody.txt'
-            httpc post -v -h Content-Type:application/json --d '{"Assignment": 210}' 'http://localhost/xx.txt'
-            httpc get -v 'http://localhost'
+         A2:
+         httpc post -v -h Content-Type:application/json --d '{"Assignment": 100}' 'http://localhost/inputBody.txt'
+            httpc post -v -h Content-Type:application/json --d '{"Assignment": 100}' 'http://localhost/xx.txt'
+
+            httpc get -v 'http://localhost/sometext.txt/get?Assignment=2'
+
+            httpc -v 'http://localhost/sometext.txt/get?Assignment=2' -o requestResponse.txt
+
+
+            //Tests
+
+            //return content of file namde sometext in the directory (returns 404 if doens't exist)
             httpc get -v 'http://localhost/sometext.txt'
 
-            httpc get -v 'http://localhost/sometext.txt/get?Assignment=1'
+            //return a list of current files in data directory
+            //httpc get -v 'http://localhost'
 
-            httpc -v 'http://localhost/sometext.txt/get?Assignment=1' -o requestResponse.txt
-
-
-             httpc post -v -h Content-Type:application/json --d '{"Assignment": 1}' 'http://localhost/sometext.txt'
+            //post/write to a file
+             httpc post -v -h Content-Type:application/json --d '{"Assignment": 2}' 'http://localhost/sometext.txt'

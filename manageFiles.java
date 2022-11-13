@@ -20,8 +20,6 @@ public class manageFiles {
             bufferedWriter = new BufferedWriter(new FileWriter(file));
             bufferedWriter.write(body);
             bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) {e.printStackTrace();}
     }
 }

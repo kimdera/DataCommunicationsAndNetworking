@@ -76,7 +76,7 @@ public class manageSocketThreading extends Thread {
     }
 
     private void handleRequest(SocketChannel socketChannel) throws IOException {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(10000);
+        ByteBuffer byteBuffer = ByteBuffer.allocate(20000);
         int buffer = socketChannel.read(byteBuffer);
         String header = null;
         String body = null;
@@ -84,15 +84,13 @@ public class manageSocketThreading extends Thread {
             byteBuffer.flip();
             String request = StandardCharsets.UTF_8.decode(byteBuffer).toString();
             if (debugMessage) {
-                System.out.println("Here are the debug messages:");
+                System.out.println("DEBUG LOGS:");
                 System.out.println(request);
                 System.out.println();
             }
             byteBuffer.clear();
             header = request.split("\r\n\r\n")[0];
-            if (header.contains("POST")) {
-                body = request.split("\r\n\r\n")[1];
-            }
+            if (header.contains("POST")) {body = request.split("\r\n\r\n")[1];}
         }
         socketChannel.socket().shutdownInput();
 
@@ -142,9 +140,9 @@ public class manageSocketThreading extends Thread {
         String fileName = url.getFile();
         File file = new File(this.directoryPath + fileName);
         if ((file.exists() || fileName.equals("") && header.contains("GET")) || header.contains("POST")) {
-            // if(!file.canRead()&&header.contains("GET")){
-            // return "HTTP/1.0 ERROR 500";
-            // }
+            if(!file.canRead()&&header.contains("GET")){
+            return "HTTP/1.0 ERROR 500";
+            }
             return "HTTP/1.0 200 OK";
         } else {
             return "HTTP/1.0 ERROR 404";

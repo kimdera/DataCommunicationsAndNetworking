@@ -20,18 +20,9 @@ public class manageSocketThreading extends Thread {
     private int portNum;
     private HashMap<String, String> query = new HashMap<>();
 
-    public void setPort(int portNum) {
-        this.portNum = portNum;
-    }
-
-    public void setDebugMessage(boolean debugMessage) {
-        this.debugMessage = debugMessage;
-    }
-
-    public void setDirectoryPath(String directoryPath) {
-        this.directoryPath = directoryPath;
-    }
-
+    public void setPort(int portNum) {this.portNum = portNum;}
+    public void setDebugMessage(boolean debugMessage) {this.debugMessage = debugMessage;}
+    public void setDirectoryPath(String directoryPath) {this.directoryPath = directoryPath; }
     public manageSocketThreading(ServerSocketChannel serverSocketChannel) {
         this.serverSocketChannel = serverSocketChannel;
         this.debugMessage = false;
@@ -68,7 +59,7 @@ public class manageSocketThreading extends Thread {
             if (userInput.contains("-d")) {
                 this.setDirectoryPath(userInput.substring(userInput.indexOf("-d") + 3));
             }
-            System.out.println("The server has been launched");
+            System.out.println("Started Server ...");
         } else {
             System.out.println("Invalid command");
             System.exit(0);
@@ -123,7 +114,8 @@ public class manageSocketThreading extends Thread {
         if (status(header).contains("200") && status(header).contains("OK")) {
             stringBuilder.append(locateFiles(header, body) + "\r\n");
         }
-        if (path.contains("get") || path.contains("post")) {// normal request as A1
+        //A1 requests
+        if (path.contains("get") || path.contains("post")) {
             stringBuilder.append(output(header, body));
         }
         return stringBuilder.toString();
@@ -132,32 +124,26 @@ public class manageSocketThreading extends Thread {
     private String status(String header) throws IOException {
         String[] firstLine = header.split("\r\n")[0].split(" ");
         String path = firstLine[1];
-
-        if (path.contains("get") || path.contains("post")) {// normal request as A1
+        //A1 requests
+        if (path.contains("get") || path.contains("post")) {
             return "HTTP/1.0 200 OK";
         }
         URL url = new URL(path);
         String fileName = url.getFile();
         File file = new File(this.directoryPath + fileName);
         if ((file.exists() || fileName.equals("") && header.contains("GET")) || header.contains("POST")) {
-            if(!file.canRead()&&header.contains("GET")){
-            return "HTTP/1.0 ERROR 500";
-            }
+            if(!file.canRead()&&header.contains("GET")){return "HTTP/1.0 ERROR 500"; }
             return "HTTP/1.0 200 OK";
-        } else {
-            return "HTTP/1.0 ERROR 404";
-        }
+        } else {return "HTTP/1.0 ERROR 404";}
     }
 
-    /* A1 normal request */
+    //A1 request
     private String output(String header, String body) throws MalformedURLException {
         StringBuilder stringBuilder = new StringBuilder();
         String[] firstLine = header.split("\r\n")[0].split(" ");
         String path = firstLine[1];
         URL url = new URL(path);
-        if (path.contains("?")) {
-            queryParameters(url);
-        }
+        if (path.contains("?")) {queryParameters(url);}
         stringBuilder.append("{\r\n");
         stringBuilder.append("  \"args\": {\r\n");
         for (String key : query.keySet()) {
@@ -201,7 +187,7 @@ public class manageSocketThreading extends Thread {
         if (header.contains("GET")) {
             if (fileName.equals("")) {
                 File[] fileList = file.listFiles((dir, name) -> name.charAt(0) != '.');
-                stringBuilder.append("Here are the files in this directory:\r\n");
+                stringBuilder.append("Inside this active directory:\r\n");
                 for (File f : fileList) {
                     stringBuilder.append(f.getName() + "\r\n");
                 }

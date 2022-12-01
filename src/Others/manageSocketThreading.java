@@ -80,11 +80,11 @@ public class manageSocketThreading extends Thread {
             byteBuffer.clear();
             datagramChannel.receive(byteBuffer);
             byteBuffer.flip();
-            Packet packet = Packet.fromBuffer(byteBuffer);
+            Packet packet = Packet.bufferToPacket(byteBuffer);
 
             if (packet.getType() == 0) {
                 System.out.println("Three-way handshake is done, server is connected");
-                packet.toBuilder().setType(1);
+                packet.packetToBuilder().setType(1);
                 String payload = new String(packet.getPayload(), UTF_8);
 
                 if (debugMessage) {
@@ -98,9 +98,9 @@ public class manageSocketThreading extends Thread {
                 if (header.contains("POST")) {
                     body = payload.split("\r\n\r\n")[1];
                 }
-                Packet response = packet.toBuilder().setSequenceNumber(packet.getSequenceNumber() + 1).setType(1)
+                Packet response = packet.packetToBuilder().setSequenceNumber(packet.getSequenceNumber() + 1).setType(1)
                         .setPayload(response(header, body).getBytes()).create();
-                this.datagramChannel.send(response.toBuffer(), routerAddress);
+                this.datagramChannel.send(response.packetToBuffer(), routerAddress);
             } else {
                 threeWayHandShake(packet);
             }
@@ -112,9 +112,9 @@ public class manageSocketThreading extends Thread {
         System.out.println("Handshaking #1 SYN packet has received");
         System.out.println("Message is : " + new String(packet.getPayload(), StandardCharsets.UTF_8));
         String testString = "Hi";
-        Packet response = packet.toBuilder().setSequenceNumber(packet.getSequenceNumber() + 1).setType(3)
+        Packet response = packet.packetToBuilder().setSequenceNumber(packet.getSequenceNumber() + 1).setType(3)
                 .setPayload(testString.getBytes()).create();
-        this.datagramChannel.send(response.toBuffer(), routerAddress);
+        this.datagramChannel.send(response.packetToBuffer(), routerAddress);
         System.out.println("Handshaking #2 SYN packet has sent out");
 
     }

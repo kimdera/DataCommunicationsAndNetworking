@@ -2,9 +2,11 @@ package Others;
 
 import java.io.*;
 
-public class FileOperation {
-    public String readFile(String path) throws IOException {
-        File file = new File(path);
+public class manageFiles {
+
+    // read from a given file
+    public String readFile(String filePath) throws IOException {
+        File file = new File(filePath);
         StringBuilder stringBuilder = new StringBuilder();
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
         String nextLine;
@@ -15,14 +17,15 @@ public class FileOperation {
         return stringBuilder.toString();
     }
 
-    public void writeFile(String body, String filePath){
+    // write to a specfied file
+    public void writeFile(String body, String filePath) {
         File file = new File(filePath);
-        BufferedWriter writer = null;
+        BufferedWriter bufferedWriter = null;
         try {
-            writer = new BufferedWriter(new FileWriter(file));
-            writer.write(body);
-            writer.close();
-        }catch (IOException e){
+            bufferedWriter = new BufferedWriter(new FileWriter(file));
+            bufferedWriter.write(body);
+            bufferedWriter.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

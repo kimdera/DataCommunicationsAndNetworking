@@ -1,6 +1,6 @@
 package Others;
 
-import Others.FileOperation;
+import Others.manageFiles;
 import UDP.UDPClient;
 
 import java.io.*;
@@ -13,7 +13,7 @@ public class ClientLibrary {
     private String host;
     private int portNum;
 
-    /* use specific data structure to store required information */
+    // Using hashmap to store required information
     private HashMap<String, String> requestHeader = new HashMap<>();
     private String requestBody;
     private HashMap<String, String> queryHM = new HashMap<>();
@@ -24,14 +24,15 @@ public class ClientLibrary {
 
     public String GETorPOST(String method, String str) throws MalformedURLException {
 
-        /* to get host and portNum from given URL */
+        // getting the host and the port num from the given URL
         String url = str.substring(str.indexOf("http://"), str.indexOf("'", str.indexOf("http://")));
         URL mainUrl = new URL(url);
         this.host = mainUrl.getHost();
         this.portNum = mainUrl.getPort();
 
+        // handling queryHM params
         if (str.contains("?")) {
-            queryParams(mainUrl);// handle queryHM parameters
+            queryParams(mainUrl);
         }
         String response = null;
         try {
@@ -63,27 +64,28 @@ public class ClientLibrary {
     private String buildRequest(String method, String str, String url) throws IOException {
 
         /*
-         * default information setting(Notice : not all of http requestHeader field
-         * definitions
-         * are defined,only those that appeared in the assignment are defined)
+         * default info values
+         * (NOTE : only the http requestHeader field definitions that were mentioned in
+         * the pdf are defined)
          */
         String connectionType = "close";
         String userAgent = "COMP445";
         String contentType = null;
         String contentLength = null;
-        FileOperation fileOperation = new FileOperation();
-        if (method.equals("POST")) {// these options are only valid under POST request
+        manageFiles manageFiles = new manageFiles();
+        // valid options for post request
+        if (method.equals("POST")) {
             contentType = "text/plain";
             if (str.contains("-d")) {
                 requestBody = str.substring(str.indexOf("{", str.indexOf("-d")), str.indexOf("}") + 1);
             } else if (str.contains("-f")) {
                 String path = str.substring(str.indexOf("-f") + 3, str.indexOf(" ", str.indexOf("-f") + 3));
-                requestBody = fileOperation.readFile(path);
+                requestBody = manageFiles.readFile(path);
             }
             contentLength = String.valueOf(requestBody.length());
         }
 
-        /* initial headers to hash-map */
+        // initial headers for the key value pair in the hash-map
         requestHeader.put("Host", this.host);
         requestHeader.put("Connection", connectionType);
         requestHeader.put("User-Agent", userAgent);
@@ -92,7 +94,7 @@ public class ClientLibrary {
             requestHeader.put("Content-Type", contentType);
         }
 
-        /*-h Header requirement:support multiple headers add or update*/
+        // -h command, support multiple headers addition or update
         String stringVar = str;
         String key;
         String value;
@@ -125,22 +127,22 @@ public class ClientLibrary {
         return stringBuilder.toString();
     }
 
-    /* str: whole command line input */
+    // processing the whole cli to form a response
     private String buildResponse(String payload, String str) throws IOException {
 
-        FileOperation fileOperation = new FileOperation();
+        manageFiles manageFiles = new manageFiles();
         String response = payload;
 
         /* verbose requirement */
         if (str.contains("-v")) {// case that needs verbose
             if (outputToFile(str)) {// case need to output requestBody data
-                fileOperation.writeFile(response, str.substring(str.indexOf("-o") + 3));
+                manageFiles.writeFile(response, str.substring(str.indexOf("-o") + 3));
             }
             return response;
         } else {// case that does not need verbose
             response = response.substring(response.indexOf("{"), response.lastIndexOf("}") + 1);
             if (outputToFile(str)) {// case need to output requestBody data
-                fileOperation.writeFile(response, str.substring(str.indexOf("-o") + 3));
+                manageFiles.writeFile(response, str.substring(str.indexOf("-o") + 3));
             }
         }
         return response;
@@ -153,15 +155,14 @@ public class ClientLibrary {
         return false;
     }
 
-    /* method to determine if the http response needs a redirection or not */
+    // checking if header needs a redirection
     private boolean needRedirection(String data) {
-        data = data.substring(0, 20);// this is due to status will always be the first line, 0-20 characters for
-                                     // approximation of it.
+        data = data.substring(0, 20);// status will always be the first line and approximately 0-20 characters
         if (data.contains("300") || data.contains("301") || data.contains("302") || data.contains("304")) {// satisfy
                                                                                                            // any of
-                                                                                                           // those will
+                                                                                                           // those that
                                                                                                            // need
-                                                                                                           // redirect
+                                                                                                           // redirection
             return true;
         }
         return false;

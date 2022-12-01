@@ -17,7 +17,7 @@ public class UDPClient {
 
     private SocketAddress localAddress;
     private SocketAddress routerAddress;
-    private boolean isHandShaken = false;
+    private boolean handShakeSuccess = false;
 
     public UDPClient() {
         this.localAddress = new InetSocketAddress(41830);
@@ -33,7 +33,7 @@ public class UDPClient {
         DatagramChannel datagramChannel = DatagramChannel.open();
         datagramChannel.bind(this.localAddress);
         long newSeq = threeWayHandShake(datagramChannel, serverAddress);
-        if (this.isHandShaken) {
+        if (this.handShakeSuccess) {
             Packet p = null;
             if (message.getBytes().length <= Packet.MAX_DATA) {
                 p = new Packet.Builder()
@@ -62,7 +62,7 @@ public class UDPClient {
     }
 
     private void timer(DatagramChannel datagramChannel, Packet packet) throws IOException {
-        // Try to receive a packet within timeout.
+        // receiving a packet within the timeout
         try {
             datagramChannel.configureBlocking(false);
             Selector selector = Selector.open();
@@ -81,6 +81,7 @@ public class UDPClient {
         }
     }
 
+    // mimicking TCP three way handshake
     private long threeWayHandShake(DatagramChannel datagramChannel, InetSocketAddress serverAddress)
             throws IOException {
 
@@ -93,21 +94,21 @@ public class UDPClient {
                 .setPayload(testString.getBytes())
                 .create();
         datagramChannel.send(test.packetToBuffer(), routerAddress);
-        System.out.println("Handshaking #1 SYN packet has already sent out");
+        System.out.println("Handshaking #1 SYN packet has already been sent out");
 
         timer(datagramChannel, test);
 
-        System.out.println("after timer");
+        System.out.println("after the timer has finished: ");
         ByteBuffer byteBuffer = ByteBuffer.allocate(Packet.MAX_LEN);
         byteBuffer.clear();
         datagramChannel.receive(byteBuffer);
         byteBuffer.flip();
-        System.out.println("after buffer flip");
+        System.out.println("after the buffer flip has been done: ");
         Packet packet = Packet.bufferToPacket(byteBuffer);
 
-        System.out.println("Message from server is :" + new String(packet.getPayload(), StandardCharsets.UTF_8));
-        this.isHandShaken = true;
-        System.out.println("Three-way handshake is done, data will start transferring");
+        System.out.println("Message from the server is :" + new String(packet.getPayload(), StandardCharsets.UTF_8));
+        this.handShakeSuccess = true;
+        System.out.println("Three-way handshake is successful. Therefore, data will start transferring");
         System.out.println("\r\n");
         return packet.getSequenceNumber();
     }

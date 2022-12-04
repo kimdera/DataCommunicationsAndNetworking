@@ -6,7 +6,8 @@ Run router from router/source:<br>
 
 Run server:<br>
 ```httpfs -d /Users/Kim/Desktop/lab3/445-a3/UDP-Console-Server-master/src```<br>
-```httpfs -v -p 8080 -d /Users/Kim/Desktop/lab3/445-a3/UDP-Console-Server-master/src```
+```httpfs -v -p 8080 -d /Users/Kim/Desktop/lab3/445-a3/UDP-Console-Server-master/src```<br>
+```httpfs -d /Users/raisazaman/Desktop/COMP 445/src```
 
 Run client:<br>
 ```httpc get -v 'http://localhost:8007'```<br>

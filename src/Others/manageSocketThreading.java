@@ -157,7 +157,7 @@ public class manageSocketThreading extends Thread {
         String fileName = url.getFile();
         // File file = new File(this.directoryPath+"\\"+fileName);
         File file = new File(this.directoryPath + fileName);
-        System.out.println("file" + file);
+
         if ((file.exists() || fileName.equals("") && header.contains("GET")) || header.contains("POST")) {
             // if(!file.canRead()&&header.contains("GET")){
             // return "HTTP/1.0 ERROR 500";
